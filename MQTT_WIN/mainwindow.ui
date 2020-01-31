@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>342</width>
-    <height>283</height>
+    <height>305</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -100,6 +100,19 @@
     </property>
     <property name="text">
      <string>接收的信息：</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>210</y>
+      <width>80</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>发送消息</string>
     </property>
    </widget>
   </widget>
