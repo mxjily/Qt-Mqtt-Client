@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
+#include <QMessageBox>
 #include "mqtt/qmqtt.h"
 #include <string>
 int flag = 0;  //判断是否连接服务器
@@ -39,8 +40,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);  ////////////////
-    this->setMaximumSize(300,355);
-    this->setMinimumSize(300,255);
+    this->setMaximumSize(300,455);
+    this->setMinimumSize(300,455);
 
     // 如果没有连接服务器，显示提示信息
     if(!flag){
@@ -52,10 +53,10 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
 
-    client = new QMQTT::Client(QHostAddress("127.0.0.1"),1883,0);  //new client
-//    client->setClientId("MQTT_Qt");
-//    client->setUsername("yks");
-//    client->setPassword("123435");
+    client = new QMQTT::Client(QHostAddress("47.101.208.42"),1883,0);  //new client
+    client->setClientId("MQTT_Qt");
+    client->setUsername("YKS-Qt");
+    client->setPassword("123435");
     client->setCleanSession(true);
     client->connectToHost();
     connect(client,SIGNAL(connected()),this,SLOT(onMQTT_Connectted()));
@@ -78,12 +79,22 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {   if(flag)
     {
-    data += 1;
-    QString Data = QString::number(data);
+//    data += 1;
+//    QString Data = QString::number(data);
+     QString  InputCmd = ui->lineEdit->text();
+
+    if(QString(InputCmd).isEmpty()){
+        QMessageBox::about(this,"提示","请先输入指令再发送！！");
+        return ;
+    }
+    else{
+    qDebug()<<"Qt输入的命令为: "<<InputCmd<<endl;
     QString topicPub = "/public/test";
-    QString messagePub ="MQTT "+Data;
+    QString messagePub ="MQTT: "+InputCmd;
     QMQTT::Message msg(0,topicPub.toLatin1(),messagePub.toLatin1());
     client->publish(msg);
     qDebug()<<"publish success"<<endl;
+    ui->lineEdit->setText("");
+    }
     }
 }
